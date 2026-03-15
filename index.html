@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Habit Tracker</title>
+
+<style>
+
+body{
+font-family: Arial;
+text-align:center;
+background:#f4f4f4;
+}
+
+table{
+margin:auto;
+border-collapse: collapse;
+}
+
+th,td{
+padding:12px;
+border:1px solid #ccc;
+}
+
+button{
+padding:10px 20px;
+background:#2e86de;
+color:white;
+border:none;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Habit Tracker</h1>
+
+<h3 id="date"></h3>
+
+<table>
+
+<tr>
+<th>Habit</th>
+<th>Done</th>
+</tr>
+
+<tr>
+<td>Reading</td>
+<td><input type="checkbox" id="reading"></td>
+</tr>
+
+<tr>
+<td>Workout</td>
+<td><input type="checkbox" id="workout"></td>
+</tr>
+
+<tr>
+<td>Studying</td>
+<td><input type="checkbox" id="studying"></td>
+</tr>
+
+<tr>
+<td>Self Reflection</td>
+<td><input type="checkbox" id="reflection"></td>
+</tr>
+
+<tr>
+<td>Drawing</td>
+<td><input type="checkbox" id="drawing"></td>
+</tr>
+
+</table>
+
+<br>
+
+<button onclick="saveData()">Save Today</button>
+
+<script>
+
+document.getElementById("date").innerText =
+new Date().toDateString();
+
+function saveData(){
+
+const data = {
+
+date:new Date().toISOString().slice(0,10),
+
+reading:document.getElementById("reading").checked,
+workout:document.getElementById("workout").checked,
+studying:document.getElementById("studying").checked,
+reflection:document.getElementById("reflection").checked,
+drawing:document.getElementById("drawing").checked
+
+}
+
+fetch("YOUR_GOOGLE_SCRIPT_URL",{
+
+method:"POST",
+body:JSON.stringify(data)
+
+})
+
+.then(res=>res.text())
+.then(data=>alert("Saved Successfully"))
+
+}
+
+</script>
+
+</body>
+</html>
