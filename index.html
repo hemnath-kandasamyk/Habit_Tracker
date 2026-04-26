@@ -1,114 +1,75 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Habit Tracker</title>
-
-<style>
-
-body{
-font-family: Arial;
-text-align:center;
-background:#f4f4f4;
-}
-
-table{
-margin:auto;
-border-collapse: collapse;
-}
-
-th,td{
-padding:12px;
-border:1px solid #ccc;
-}
-
-button{
-padding:10px 20px;
-background:#2e86de;
-color:white;
-border:none;
-cursor:pointer;
-}
-
-</style>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HabitGrid — Login</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
 </head>
+<body class="login-page">
 
-<body>
+  <div class="login-bg">
+    <div class="grid-overlay"></div>
+  </div>
 
-<h1>Habit Tracker</h1>
+  <div class="login-wrapper">
+    <div class="login-card">
+      <div class="login-brand">
+        <div class="brand-icon">
+          <span class="dot d1"></span>
+          <span class="dot d2"></span>
+          <span class="dot d3"></span>
+          <span class="dot d4"></span>
+        </div>
+        <h1 class="brand-name">HabitGrid</h1>
+        <p class="brand-sub">Track. Streak. Dominate.</p>
+      </div>
 
-<h3 id="date"></h3>
+      <form class="login-form" id="loginForm">
+        <div class="field-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" placeholder="Enter username" autocomplete="off" />
+        </div>
+        <div class="field-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Enter password" />
+        </div>
+        <div class="error-msg" id="loginError">Invalid credentials. Try again.</div>
+        <button type="submit" class="btn-login">
+          <span class="btn-text">Enter Grid</span>
+          <span class="btn-arrow">→</span>
+        </button>
+      </form>
 
-<table>
+      <p class="login-hint">Demo: user1 / 1234 &nbsp;·&nbsp; user2 / 5678</p>
+    </div>
+  </div>
 
-<tr>
-<th>Habit</th>
-<th>Done</th>
-</tr>
+  <script>
+    // Redirect if already logged in
+    if (localStorage.getItem('hg_user')) {
+      window.location.href = 'tracker.html';
+    }
 
-<tr>
-<td>Reading</td>
-<td><input type="checkbox" id="reading"></td>
-</tr>
+    const USERS = { hemnath: '9025', velu: '9025' };
 
-<tr>
-<td>Workout</td>
-<td><input type="checkbox" id="workout"></td>
-</tr>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const u = document.getElementById('username').value.trim();
+      const p = document.getElementById('password').value.trim();
+      const err = document.getElementById('loginError');
 
-<tr>
-<td>Studying</td>
-<td><input type="checkbox" id="studying"></td>
-</tr>
-
-<tr>
-<td>Self Reflection</td>
-<td><input type="checkbox" id="reflection"></td>
-</tr>
-
-<tr>
-<td>Drawing</td>
-<td><input type="checkbox" id="drawing"></td>
-</tr>
-
-</table>
-
-<br>
-
-<button onclick="saveData()">Save Today</button>
-
-<script>
-
-document.getElementById("date").innerText =
-new Date().toDateString();
-
-function saveData(){
-
-const data = {
-
-date:new Date().toISOString().slice(0,10),
-
-reading:document.getElementById("reading").checked,
-workout:document.getElementById("workout").checked,
-studying:document.getElementById("studying").checked,
-reflection:document.getElementById("reflection").checked,
-drawing:document.getElementById("drawing").checked
-
-}
-
-fetch("https://script.google.com/macros/s/AKfycbxg4QF-Ero5D-HpwgAl06D_tn-c9OEpRZFjGQw1AIqb4IZGh4fkR4RIrDOZaxiY-qE5/exec",{
-
-method:"POST",
-body:JSON.stringify(data)
-
-})
-
-.then(res=>res.text())
-.then(data=>alert("Saved Successfully"))
-
-}
-
-</script>
-
+      if (USERS[u] && USERS[u] === p) {
+        localStorage.setItem('hg_user', u);
+        document.querySelector('.btn-login').innerHTML = '<span class="btn-text">Loading…</span>';
+        setTimeout(() => window.location.href = 'tracker.html', 400);
+      } else {
+        err.classList.add('visible');
+        document.getElementById('password').value = '';
+        setTimeout(() => err.classList.remove('visible'), 3000);
+      }
+    });
+  </script>
 </body>
 </html>
