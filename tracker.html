@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HabitGrid — April 2026</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+</head>
+<body class="tracker-page">
+
+  <!-- Top Bar -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="brand-icon small">
+        <span class="dot d1"></span><span class="dot d2"></span>
+        <span class="dot d3"></span><span class="dot d4"></span>
+      </div>
+      <span class="topbar-title">HabitGrid</span>
+    </div>
+    <div class="topbar-center">
+      <span class="month-label">April 2026</span>
+    </div>
+    <div class="topbar-right">
+      <span class="user-badge" id="userBadge">—</span>
+      <button class="btn-logout" id="logoutBtn">Logout</button>
+    </div>
+  </header>
+
+  <!-- Loading overlay -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loader-ring"></div>
+    <p>Syncing your grid…</p>
+  </div>
+
+  <!-- Main content -->
+  <main class="main-content">
+
+    <!-- Summary cards -->
+    <section class="summary-row" id="summaryRow"></section>
+
+    <!-- Grid -->
+    <section class="grid-section">
+      <div class="grid-scroll-wrapper">
+        <table class="habit-table" id="habitTable">
+          <thead>
+            <tr id="dateHeaderRow">
+              <th class="habit-label-th">Habit</th>
+              <!-- date cols injected by JS -->
+            </tr>
+          </thead>
+          <tbody id="habitBody">
+            <!-- rows injected by JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Legend -->
+    <div class="legend">
+      <span class="legend-item"><span class="legend-dot done"></span> Done</span>
+      <span class="legend-item"><span class="legend-dot today"></span> Today</span>
+      <span class="legend-item"><span class="legend-dot locked"></span> Locked</span>
+    </div>
+
+  </main>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
