@@ -7,9 +7,9 @@
 // 🔴 REPLACE THIS with your deployed Google Apps Script Web App URL
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx2IatZWCUD9mQbcuLKgfM67CuiZJf5D8Jj7_mgGAqFIuNedkvLf4iTmejax0gC1IBb/exec';
 
-// Month / Year tracked (April 2026)
+// Month / Year tracked (May 2026)
 const TRACK_YEAR  = 2026;
-const TRACK_MONTH = 3; // 0-indexed: 3 = April
+const TRACK_MONTH = 4; // 0-indexed: 4 = May
 
 // Habit definitions
 const HABITS = [
@@ -21,8 +21,8 @@ const HABITS = [
   { key: 'audio_creation',label: 'Audio Creation',  emoji: '🎙️', color: '#ec4899', colorRaw: '236,72,153'  },
 ];
 
-// Days in April 2026
-const DAYS_IN_MONTH = new Date(TRACK_YEAR, TRACK_MONTH + 1, 0).getDate(); // 30
+// Days in May 2026
+const DAYS_IN_MONTH = new Date(TRACK_YEAR, TRACK_MONTH + 1, 0).getDate(); // 31
 
 // ── STATE ───────────────────────────────────────────────────────
 let currentUser  = null;
@@ -48,7 +48,7 @@ function logout() {
 
 // ── DATE UTILS ───────────────────────────────────────────────────
 function todayDate() {
-  // Use April 2026 context. Real today for production.
+  // Use the configured track month context. Real today for production.
   return new Date();
 }
 
@@ -74,6 +74,11 @@ function isPast(day) {
 
 function isFuture(day) {
   return !isToday(day) && !isPast(day);
+}
+
+function isLocked(day) {
+  // Only today's tasks remain editable; past and future days are locked.
+  return !isToday(day);
 }
 
 function isWeekend(day) {
@@ -121,13 +126,13 @@ function buildTable() {
       td.dataset.day = d;
 
       const circle = document.createElement('div');
-      circle.className = 'circle' + (isToday(d) ? ' today-circle' : '') + (isFuture(d) ? ' locked' : '');
+      circle.className = 'circle' + (isToday(d) ? ' today-circle' : '') + (isLocked(d) ? ' locked' : '');
       circle.dataset.habit = habit.key;
       circle.dataset.day   = d;
       circle.style.setProperty('--habit-color', habit.color);
       circle.style.setProperty('--habit-color-raw', habit.colorRaw);
 
-      if (!isFuture(d)) {
+      if (!isLocked(d)) {
         circle.addEventListener('click', onCircleClick);
       }
 
@@ -211,7 +216,7 @@ function onCircleClick(e) {
   const habit  = circle.dataset.habit;
   const day    = parseInt(circle.dataset.day);
 
-  if (isFuture(day) || circle.classList.contains('pending')) return;
+  if (isLocked(day) || circle.classList.contains('pending')) return;
 
   const key    = `${habit}|${isoDate(day)}`;
   const newVal = !(habitData[key] === true);
